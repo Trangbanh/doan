@@ -1,0 +1,85 @@
+﻿@using Fruit.Base.Models
+@model Product
+@{
+    ViewData["Title"] = "CreateOrEdit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var title = string.Empty;
+    if (Model != null && Model.ProductId > 0)
+    {
+        title = "Chỉnh sửa sản phẩm";
+    }
+    else
+    {
+        title = "Thêm mới sản phẩm";
+    }
+    var lstProductType = (List<ProductType>)ViewBag.ListProductType;
+}
+<div class="row">
+    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+        <h4 class="mb-sm-0">@title</h4>
+    </div>
+</div>
+<div class="row project-wrapper">
+    <div class="card">
+        <div class="card-body">
+            <div class="table-card">
+                <input type="hidden" name="ProductId" id="ipIdHidden" value="@Model.ProductId" />
+                <div class="row py-3">
+                    <div class="col-md-6 form-group">
+                        <label><span class="text-danger">*</span>Tên sản phẩm</label>
+                        <input type="text" class="form-control" name="ProductName" id="ipProductName" placeholder="Tên sản phẩm ..." value="@Model.ProductName" />
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label><span class="text-danger">*</span>Danh mục sản phẩm</label>
+                        <select class="form-select  cpn-cls" id="sltProductType" name="IDType">
+                            <option value="0">--Chọn danh mục sản phẩm--</option>
+                            @if (lstProductType != null && lstProductType.Count > 0)
+                            {
+                                foreach (var item in lstProductType)
+                                {
+                                    if (Model.Idtype == item.Idtype)
+                                    {
+                                        <option value="@item.Idtype" selected>@item.TypeName</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.Idtype">@item.TypeName</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label><span class="text-danger">*</span>Giá </label>
+                        <input type="number" class="form-control" id="ipPrice" value="@Model.Price" name="Price" placeholder="Giá tiền..." />
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Giá giảm giá</label>
+                        <input type="number" class="form-control" id="ipPromotionalPrice" value="@Model.PromotionalPrice" name="PromotionalPrice" placeholder="Giá giảm giá ..." />
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Ảnh sản phẩm</label>
+                        <input type="file" class="form-control" name="fileUpload" id="ipFileUpload" />
+                    </div>
+                    <div class="col-md-12 form-group mt-2">
+                        <label>Mô tả sản phẩm</label>
+                        <textarea class="form-control" id="TxtDescription">@Html.Raw(Model.Description)</textarea>
+                    </div>
+                    <div class="col-md-12 mt-2">
+                        <div class="d-sm-flex align-items-center justify-content-between">
+                            <div></div>
+                            <div class="page-title-right">
+                                <button type="button" class="btn btn-primary" id="btnCreateSubmit">Lưu</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- end card body -->
+    </div>
+</div>
+@section scripts {
+    <script>
+        var editor = base.CreateCKEditor('TxtDescription');
+    </script>
+}

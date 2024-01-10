@@ -1,0 +1,56 @@
+﻿@using Fruit.Base.Models;
+@model User
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="breadcrumb-section breadcrumb-bg">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 offset-lg-2 text-center">
+				<div class="breadcrumb-text">
+					<p>Thông tin của tôi</p>
+					<h1>Thay đổi thông tin của tôi</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="checkout-section mt-150 mb-150">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="checkout-accordion-wrap">
+					<div class="accordion" id="accordionExample">
+						<div class="card single-accordion">
+							<div class="card-header" id="headingOne">
+								<h5 class="mb-0">
+									<button class="btn btn-link" type="button" aria-expanded="true">
+										Thông tin của tôi
+									</button>
+								</h5>
+							</div>
+
+							<div id="collapseOne">
+								<div class="card-body">
+									<div class="billing-address-form">
+										<form id="frmUser">
+											<p><input type="text" name="Name" class="form-control" id="ipName" value="@Model.Name" placeholder="Họ và tên*"></p>
+											<p><input type="text" class="form-control" value="@Model.Sdt" name="Sdt" placeholder="Số điện thoại "></p>
+											<p><input type="text" class="form-control" value="@Model.Address" name="Address" placeholder="Địa chỉ "></p>
+										</form>
+										<div class="mt-3">
+											<button class="btn btn-success w-100" id="btnEditProfile" type="button">Lưu</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

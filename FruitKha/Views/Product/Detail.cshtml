@@ -1,0 +1,76 @@
+﻿@using Fruit.Base.Models
+@using System.Globalization
+@model Product
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var lstRelatedPro = (List<Product>)ViewBag.LstRelatedPro;
+}
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p>Xem thêm chi tiết</p>
+                    <h1>Chi tiết sản phẩm</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="single-product mt-150 mb-150">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="single-product-img">
+                    <img src="/Uploads/Product/@Model.Image" alt="Ảnh sản phẩm">
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="single-product-content">
+                    <h3>@Model.ProductName</h3>
+                    <p class="single-product-pricing">@(Model.PromotionalPrice > 0 ? Model.PromotionalPrice.ToString("C", CultureInfo.GetCultureInfo("vi-VN")) : Model.Price.ToString("C", CultureInfo.GetCultureInfo("vi-VN")))</p>
+                    <p>@Html.Raw(Model.Description)</p>
+                    <div class="single-product-form">
+                        <form id="frmQua">
+                            <input type="number" value="1" id="ipQuantityProduct">
+                        </form>
+                        <a href="javascript:void(0)" onclick="base.addCart(@Model.ProductId, $('#ipQuantityProduct').val())" class="cart-btn"><i class="fas fa-shopping-cart"></i> Thêm giỏ hàng</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end single product -->
+<!-- more products -->
+@if (lstRelatedPro != null && lstRelatedPro.Count > 0)
+{
+    <div class="more-products mb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 text-center">
+                    <div class="section-title">
+                        <h3><span class="orange-text">Sản phẩm</span> liên quan</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                @foreach (var item in lstRelatedPro)
+                {
+                    <div class="col-lg-4 col-md-6 text-center">
+                        <div class="single-product-item">
+                            <div class="product-image">
+                                <a href="/Product/Detail?Id=@item.ProductId"><img src="/Uploads/Product/@item.Image" alt=""></a>
+                            </div>
+                            <h3>@item.ProductName</h3>
+                            <p class="product-price">@(item.PromotionalPrice > 0 ? item.PromotionalPrice.ToString("C", CultureInfo.GetCultureInfo("vi-VN")) : item.Price.ToString("C", CultureInfo.GetCultureInfo("vi-VN")))</p>
+                            <a href="javascript:void(0)" onclick="base.addCart(@item.ProductId, 1)" class="cart-btn"><i class="fas fa-shopping-cart"></i> Thêm giỏ hàng</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+

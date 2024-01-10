@@ -1,0 +1,106 @@
+﻿@using Fruit.Base.Models
+@using System.Globalization
+@using FruitKha.Base.Session
+@model List<CartObject>
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor _httpContextAccessor;
+@{
+	var mems = SessionCustomer.GetUser(_httpContextAccessor);
+	decimal totalPriceAll = (decimal)ViewBag.TotalPriceAll;
+	string fullName = string.Empty;
+	string address = string.Empty;
+	string phone = string.Empty;
+	if(mems != null)
+	{
+		fullName = mems.FullName;
+		address = mems.Address;
+		phone = mems.PhoneNumber;
+	}
+}
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="breadcrumb-section breadcrumb-bg">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 offset-lg-2 text-center">
+				<div class="breadcrumb-text">
+					<p>Chất lượng và an toàn</p>
+					<h1>Thanh toán</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="checkout-section mt-150 mb-150">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8">
+				<div class="checkout-accordion-wrap">
+					<div class="accordion" id="accordionExample">
+						<div class="card single-accordion">
+							<div class="card-header" id="headingOne">
+								<h5 class="mb-0">
+									<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+										Thông tin giao hàng
+									</button>
+								</h5>
+							</div>
+
+							<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+								<div class="card-body">
+									<div class="billing-address-form">
+										<form >
+											<p><input type="text" placeholder="Họ và tên" value="@fullName"></p>
+											<p><input type="text" id="ipAddress" placeholder="Địa chỉ" value="@address"></p>
+											<p><input type="tel" id="ipPhone" placeholder="Số điện thoại" value="@phone"></p>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="col-lg-4">
+				<div class="order-details-wrap">
+					<table class="order-details">
+						<thead>
+							<tr>
+								<th>Chi tiết</th>
+								<th>Số tiền</th>
+							</tr>
+						</thead>
+						<tbody class="order-details-body">
+							<tr>
+								<td>Sản phẩm</td>
+								<td>Tổng</td>
+							</tr>
+							@if(Model != null && Model.Count > 0)
+							{
+								foreach(var item in Model)
+								{
+									decimal price = item.Price * item.Quantity;
+									<tr>
+										<td>@item.ProductName</td>
+										<td>@price.ToString("C", CultureInfo.GetCultureInfo("vi-VN"))</td>
+									</tr>
+								}
+							}							
+						</tbody>
+						<tbody class="checkout-details">
+							<tr>
+								<td>Tổng tiền</td>
+								<td>@totalPriceAll.ToString("C", CultureInfo.GetCultureInfo("vi-VN"))</td>
+							</tr>
+						</tbody>
+					</table>
+					<a href="javascript:void(0)" id="btnOrder" class="boxed-btn">Đặt hàng</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

@@ -1,0 +1,87 @@
+﻿@using Fruit.Base.Models
+@using FruitKha.Base.Session
+@model Blog
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor _httpContextAccessor;
+@{
+	ViewData["Title"] = "Detail";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	var lstComment = (List<Comment>)ViewBag.ListComment;
+	var mems = SessionCustomer.GetUser(_httpContextAccessor);
+}
+<!-- breadcrumb-section -->
+<div class="breadcrumb-section breadcrumb-bg">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 offset-lg-2 text-center">
+				<div class="breadcrumb-text">
+					<p>ĐỌC BÀI VIẾT</p>
+					<h1>Bài viết đơn</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end breadcrumb section -->
+<!-- single article section -->
+<div class="mt-150 mb-150">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="single-article-section">
+					<div class="single-article-text">
+						@{
+							var images = string.Empty;
+							if (!string.IsNullOrEmpty(Model.Image))
+							{
+								images = Model.Image.Replace("\\", "/");
+							}
+						}
+						<div class="single-artcile-bg" style="background-image: url(/Uploads/Blogs/@images)"></div>
+						<p class="blog-meta">
+							<span class="date"><i class="fas fa-calendar"></i> @(Model.CreatedDate != null ? Model.CreatedDate.Value.ToString("dd/MM/yyyy") : "")</span>
+						</p>
+						<h2>@Model.Title</h2>
+						<p>@Html.Raw(Model.Contents)</p>						
+					</div>
+
+					<div class="comments-list-wrap">
+						<h3 class="comment-count-title">@lstComment.Count Bình luận</h3>
+						<div class="comment-list" style="max-height:400px; overflow-y: scroll;">
+							@if(lstComment != null && lstComment.Count > 0)
+							{
+								foreach(var item in lstComment)
+								{
+									<div class="single-comment-body">
+										<div class="comment-text-body">
+											<h4>@item.UseName</h4>
+											<p>@item.CommentContent</p>
+										</div>
+									</div>
+								}
+							}
+
+						</div>
+					</div>
+					@if(mems != null)
+					{
+						<div class="comment-template">
+							<h4>Nhập bình luận</h4>
+							<form id="frmComment">
+								<input type="hidden" value="@Model.Idblog" id="ipIdBlogHidden" />
+								<p><textarea name="comment" id="ipComment" cols="30" rows="10" placeholder="Nội dung bình luận"></textarea></p>
+								<p><button type="button" class="btn btn-warning text-white" id="btnComment">Gửi bình luận</button></p>
+							</form>
+						</div>
+					}
+					else
+					{
+						<div class="comment-template">
+							<a href="/Login">Đăng nhập để bình luận</a>
+						</div>
+					}				
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

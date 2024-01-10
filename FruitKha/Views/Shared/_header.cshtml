@@ -1,0 +1,86 @@
+﻿@using FruitKha.Base.Session
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor _httpContextAccessor;
+@{
+    var mems = SessionCustomer.GetUser(_httpContextAccessor);
+}
+<div class="top-header-area" id="sticker">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 text-center">
+                <div class="main-menu-wrap">
+                    <!-- logo -->
+                    <div class="site-logo">
+                        <a href="/">
+                            <img src="assets/img/logo.png" alt="">
+                        </a>
+                    </div>
+                    <!-- logo -->
+                    <!-- menu start -->
+                    <nav class="main-menu">
+                        <ul>
+                            <li class="current-list-item">
+                                <a href="/">Trang chủ</a>
+                            </li>
+                            <li><a href="/Product/Index">Sản phẩm</a></li>
+                            <li>
+                                <a href="/Blogs">Tin tức</a>
+                            </li>
+                            <li>
+                                <a href="/Contact/Index">Liên hệ</a>
+                            </li>
+                            <li style="float:right;">
+                                @if (mems != null)
+                                {
+                                    <a href="javascript:void(0)"> @mems.Username</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="/Login/Profile">Thông tin cá nhân</a></li>
+                                        <li><a href="/Login/ChangePassword">Đổi mật khẩu</a></li>
+                                        <li><a href="/Login/Logout">Thoát</a></li>
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <a href="javascript:void(0)"> <i class="fas fa fa-user"></i></a>
+                                    <ul class="sub-menu">
+                                        <li><a href="/Login">Đăng nhập</a></li>
+                                        <li><a href="/Login/Register">Đăng ký</a></li>
+                                    </ul>
+                                }
+                            </li>
+                            <li>
+                                <div class="header-icons">
+                                    <a class="shopping-cart" href="/Cart"><i class="fas fa-shopping-cart"></i></a>
+                                    <a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+                    <a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+                    <div class="mobile-menu"></div>
+                    <!-- menu end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end header -->
+<!-- search area -->
+<div class="search-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <span class="close-btn"><i class="fas fa-window-close"></i></span>
+                <div class="search-bar">
+                    <div class="search-bar-tablecell">
+                        <h3>Tìm kiếm:</h3>
+                        <form action="/Product/Search">
+                            <input type="text" name="search" placeholder="Nội dung tìm kiếm">
+                            <button type="submit">Tìm kiếm <i class="fas fa-search"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end search area -->

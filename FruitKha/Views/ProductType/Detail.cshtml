@@ -1,0 +1,66 @@
+﻿@using Fruit.Base.Models
+@using System.Globalization
+@model List<Product>
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var typeName = ViewBag.TypeName;
+    int typeId = (int)ViewBag.TypeId;
+}
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p>Danh sách sản phẩm @typeName</p>
+                    <h1>Danh sách sản phẩm</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="product-section mt-150 mb-150">
+    <div class="container">
+        <div class="row product-lists">
+            @if (Model != null && Model.Count > 0)
+            {
+                foreach (var item in Model)
+                {
+                    <div class="col-lg-4 col-md-6 text-center">
+                        <div class="single-product-item">
+                            <div class="product-image">
+                                <a href="/Product/Detail?Id=@item.ProductId"><img src="/Uploads/Product/@item.Image" alt=""></a>
+                            </div>
+                            <h3>@item.ProductName</h3>
+                            <p class="product-price"> @(item.PromotionalPrice > 0 ? item.PromotionalPrice.ToString("C", CultureInfo.GetCultureInfo("vi-VN")) : item.Price.ToString("C", CultureInfo.GetCultureInfo("vi-VN"))) </p>
+                            <a href="javascript:void(0)" onclick="base.addCart(@item.ProductId, 1)" class="cart-btn"><i class="fas fa-shopping-cart"></i> Thêm giỏ hàng</a>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="pagination-wrap">
+                    <ul>
+                        @if (ViewBag.CurrentPage > 1)
+                        {
+                            <li><a href="@Url.Action("Detail", new { Id = typeId , page = ViewBag.CurrentPage - 1 })">Prev</a></li>
+                        }
+                        @for (var i = 1; i <= ViewBag.TotalPages; i++)
+                        {
+                            <li class="@(i == ViewBag.CurrentPage ? "active" : "")"><a href="@Url.Action("Detail", new { Id = typeId, page = i })">@i</a></li>
+                        }
+                        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                        {
+                            <li><a href="@Url.Action("Detail", new { Id = typeId, page = ViewBag.CurrentPage + 1 })">Next</a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

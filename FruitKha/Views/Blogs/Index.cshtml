@@ -1,0 +1,72 @@
+﻿@using Fruit.Base.Models
+@model List<Blog>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p>Danh sách tin tức</p>
+                    <h1>Tin tức</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="latest-news mt-150 mb-150">
+    <div class="container">
+        <div class="row">
+            @if (Model != null && Model.Count > 0)
+            {
+                foreach (var item in Model)
+                {
+                    var images = string.Empty;
+                    if (!string.IsNullOrEmpty(item.Image))
+                    {
+                        images = item.Image.Replace("\\", "/");
+                    }
+                    <div class="col-lg-4 col-md-6">
+                        <div class="single-latest-news">
+                            <a href="/Blogs/Detail?Id=@item.Idblog">
+                                <div class="latest-news-bg" style="background-image: url(/Uploads/Blogs/@images)"></div>
+                            </a>
+                            <div class="news-text-box">
+                                <h3><a href="/Blogs/Detail?Id=@item.Idblog">@item.Title</a></h3>
+                                <p class="blog-meta">
+                                    <span class="date"><i class="fas fa-calendar"></i> @item.CreatedDate.Value.ToString("dd/MM/yyyy")</span>
+                                </p>
+                                <p class="excerpt">@item.ShortContent</p>
+                                <a href="/Blogs/Detail?Id=@item.Idblog" class="read-more-btn">Chi tiết <i class="fas fa-angle-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="pagination-wrap">
+                    <ul>
+                        @if (ViewBag.CurrentPage > 1)
+                        {
+                            <li><a href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1 })">Prev</a></li>
+                        }
+                        @for (var i = 1; i <= ViewBag.TotalPages; i++)
+                        {
+                            <li class="@(i == ViewBag.CurrentPage ? "active" : "")"><a href="@Url.Action("Index", new { page = i })">@i</a></li>
+                        }
+                        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                        {
+                            <li><a href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1 })">Next</a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
